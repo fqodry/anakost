@@ -98,11 +98,11 @@
 			alert(response);
 		};
 		var onloadCallback = function() {
-			grecaptcha.render('myLoginRecaptcha', {
-				'sitekey'	: '6LchlyMTAAAAAHLD2cRSdo5B6_yzAwU_LjQDlX1m',
-				'theme'		: 'dark',
-				'size'		: 'normal'
-			});
+			// grecaptcha.render('myLoginRecaptcha', {
+			// 	'sitekey'	: '6LchlyMTAAAAAHLD2cRSdo5B6_yzAwU_LjQDlX1m',
+			// 	'theme'		: 'dark',
+			// 	'size'		: 'normal'
+			// });
 		};
 		$(document).ready(function() {
 			$('.button-collapse').sideNav({

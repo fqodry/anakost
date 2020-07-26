@@ -201,31 +201,31 @@ class Login extends CI_Controller {
 
 		if(!empty($firstname) && !empty($lastname) && !empty($email)) {
 			// Google Recaptcha Response
-			if(isset($_POST['g-recaptcha-response'])) {
-				$recaptcha = $_POST['g-recaptcha-response'];
-				$secret_key = '6LchlyMTAAAAAEwdyG6SuSBiqSMb4QY_SlD_FbeK';
-				$ip = $_SERVER['REMOTE_ADDR'];
-				$response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$secret_key."&response=".$recaptcha."&remoteip=".$ip);
-				$responseKeys = json_decode($response,true);
-				if(intval($responseKeys["success"]) !== 1) {
-					// set flashdata
-					$flash_msg = array(
-						'msg'		=> "Register Failed, wrong captcha",
-						'type'	=> "red darken-1"
-					);
-					$this->session->set_flashdata('handler_msg',$flash_msg);
+			// if(isset($_POST['g-recaptcha-response'])) {
+			// 	$recaptcha = $_POST['g-recaptcha-response'];
+			// 	$secret_key = '6LchlyMTAAAAAEwdyG6SuSBiqSMb4QY_SlD_FbeK';
+			// 	$ip = $_SERVER['REMOTE_ADDR'];
+			// 	$response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$secret_key."&response=".$recaptcha."&remoteip=".$ip);
+			// 	$responseKeys = json_decode($response,true);
+			// 	if(intval($responseKeys["success"]) !== 1) {
+			// 		// set flashdata
+			// 		$flash_msg = array(
+			// 			'msg'		=> "Register Failed, wrong captcha",
+			// 			'type'	=> "red darken-1"
+			// 		);
+			// 		$this->session->set_flashdata('handler_msg',$flash_msg);
 
-					redirect(base_url().'home');
-				}
-			} else {
-				// set flashdata
-				$flash_msg = array(
-					'msg'		=> "Register failed, please input captcha!",
-					'type'	=> "red darken-1"
-				);
-				$this->session->set_flashdata('handler_msg',$flash_msg);
-				redirect(base_url().'home');
-			}
+			// 		redirect(base_url().'home');
+			// 	}
+			// } else {
+			// 	// set flashdata
+			// 	$flash_msg = array(
+			// 		'msg'		=> "Register failed, please input captcha!",
+			// 		'type'	=> "red darken-1"
+			// 	);
+			// 	$this->session->set_flashdata('handler_msg',$flash_msg);
+			// 	redirect(base_url().'home');
+			// }
 
 			// set user ID
 			$sel_maxid = $this->User_model->maxId();
@@ -602,6 +602,11 @@ class Login extends CI_Controller {
 			$this->load->view('layouts/head_2',$data);
 			$this->load->view('login/recover',$data);
 		}
+	}
+
+	function recoverProcess() {
+		// TODO here (belum selesai...) - 27/07/2020
+		echo "TODO here (belum selesai...) - 27/07/2020";
 	}
 
 	function userConfirmation($code) {

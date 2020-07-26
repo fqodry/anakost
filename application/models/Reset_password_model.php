@@ -45,4 +45,22 @@ class Reset_password_model extends CI_Model {
 		$this->db->where($conditions);
 		$this->db->delete($this->table);
 	}
+
+	function checkLinkAvail($hashcode){
+		$data=array();
+		$now = date('Y-m-d H:i:s');
+		$this->db->select('*');
+		$this->db->where('sha1(concat(email,"x",user_id,"y",link_created_at))',$hashcode);
+		$this->db->where('is_used',0);
+		$this->db->where("link_created_at <=",$now);
+		$this->db->where("link_expired_at >=",$now);
+		$this->db->order_by("link_created_at","desc");
+		$this->db->limit(1);
+		$query=$this->db->get($this->table);
+		if($query->num_rows() > 0) {
+			$data=$query->row();
+		}
+		$query->free_result();
+		return $data;
+	}
 }

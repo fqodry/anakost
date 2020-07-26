@@ -441,15 +441,17 @@ class Login extends CI_Controller {
 		// check if user email is exist/user is active
 		$user = $this->User_model->get_single(array('email'=>$useremail,'is_avail'=>'Y'));
 		if(isset($user)) {
+			// get user account details
+			$user_details = $this->User_details_model->get_single(array('user_id'=>$user->user_id));
+			$fullname = $user_details->fullname;
+
 			// create reset link
 			$today = date("Y-m-d H:i:s");
 			$tomorrow = date("Y-m-d H:i:s", strtotime($today . ' +1 day'));
-			$hashlink = sha1($useremail."x".$user->user_id."y".strtotime($today));
+			$hashlink = sha1($useremail."x".$user->user_id."y".$today);
 			$reset_link = base_url() . "login/recover/".$hashlink;
 
 			// insert hash details to database
-			$link = $this->Reset_password_model->get_single(array('user_id'=>$user->user_id,'email'=>$user->email));
-
 			$data=array(
 				'user_id'=>$user->user_id,
 				'email'=>$user->email,
@@ -458,23 +460,125 @@ class Login extends CI_Controller {
 				'link_created_at'=>$today,
 				'link_expired_at'=>$tomorrow
 			);
-			if(empty($link)) {
-				$this->Reset_password_model->add($data);
-			} else {
-				if(strtotime($today)) {
-					
-				}
-			}
+			$this->Reset_password_model->add($data);
 
-			$flash_msg = array(
-				'msg'	=> "We have sent you an email for recover your account.",
-				'type'	=> "green lighten-1"
-			);
-			$this->session->set_flashdata('handler_msg',$flash_msg);
-			redirect(base_url().'home');
+			// sent email
+			$this->load->library('email');
+			$this->email->set_newline("\r\n");
+			$this->email->from($this->config->item('general_sender'),'Anakost.id');
+			$this->email->to($useremail);
+			$this->email->subject("Forgot My Password");
+			$this->email->message('
+				<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+				<html xmlns="http://www.w3.org/1999/xhtml">
+					<head>
+						<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+						<title>Forgot My Password</title>
+						<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+					</head>
+					<body style="margin:0; padding:0;">
+						<table border="0" cellpadding="0" cellspacing="0" width="100%">
+							<tr>
+								<td style="padding: 20px 0 30px 0;">
+									<table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse; border: 1px solid #cccccc;">
+										<tr>
+											<td align="center" bgcolor="#2bbbad" style="padding: 40px 0 30px 0;">
+												<img src="http://cdn.mbing.web.id/media/png/anakost-logo2-white.png" alt="Anakost.id Black Logo" width="260" height="70" style="display: block;" />
+											</td>
+										</tr>
+										<tr>
+											<td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
+												<table border="0" cellpadding="0" cellspacing="0" width="100%">
+													<tr>
+														<td style="color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
+															<b>Hello '.ucwords($fullname).', Thank You For Request to Recover Your Account at Anakost.id!</b>
+														</td>
+													</tr>
+													<tr>
+														<td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial,sans-serif; font-size: 16px; line-height: 20px;">
+															You have to click this link below to reset your password, please keep safe your password and Anakost.id never asked about your password.
+														</td>
+													</tr>
+													<tr>
+														<td align="center" style="padding: 20px 0 30px 0;">
+															<a href="'.$reset_link.'" target="_blank"><img src="http://cdn.mbing.web.id/media/gif/confirm-button.gif" alt="Button Confirm" width="60%" height="40%" /></a>
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+										<tr>
+											<td bgcolor="#333" style="padding: 30px 30px 30px 30px;">
+												<table border="0" cellpadding="0" cellspacing="0" width="100%">
+													<tr>
+														<td width="75%" style="color: #ffffff; font-family: Arial,sans-serif; font-size: 14px;">
+															&reg; Anakost.id, Jakarta 2017<br/>
+															<a href="#" style="color: #ffffff;"><font color="#ffffff">Unsubscribe</font></a> to this newsletter instantly
+														</td>
+														<td align="right">
+															<table border="0" cellpadding="0" cellspacing="0">
+																<tr>
+																	<td>
+																		<a href="https://twitter.com/frmnqdr" target="_blank">
+																			<img src="http://cdn.mbing.web.id/media/png/twitter-icon-wh-128.png" alt="tw icon" width="25" height="25" />
+																		</a>
+																	</td>
+																	<td style="font-size: 0; line-height: 0;" width="5">&nbsp;</td>
+																	<td>
+																		<a href="https://web.facebook.com/mfqodry" target="_blank">
+																			<img src="http://cdn.mbing.web.id/media/png/fb-icon-wh-128.png" alt="fb icon" width="25" height="25" />
+																		</a>
+																	</td>
+																	<td style="font-size: 0; line-height: 0;" width="5">&nbsp;</td>
+																	<td>
+																		<a href="https://www.instagram.com/frmnqdr/" target="_blank">
+																			<img src="http://cdn.mbing.web.id/media/png/instagram-icon-wh-128.png" alt="ig icon" width="25" height="25" />
+																		</a>
+																	</td>
+																</tr>
+															</table>
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</body>
+				</html>
+			');
+			if($this->email->send()) {
+				$logdata = array(
+					'userid' => 'system',
+					'activity' => '[Forgot Password Page] email send successful to '.$useremail
+				);
+				$this->Log_program_model->add($logdata);
+
+				$flash_msg = array(
+					'msg'	=> "We have sent you an email for recover your account.",
+					'type'	=> "green lighten-1"
+				);
+				$this->session->set_flashdata('handler_msg',$flash_msg);
+				redirect(base_url().'home');
+			} else {
+				$logdata = array(
+					'userid' => 'system',
+					'activity' => '[Forgot Password Page] failed to send email to '.$useremail
+				);
+				$this->Log_program_model->add($logdata);
+
+				$flash_msg = array(
+					'msg'	=> "Failed to send email. Please check your connection.",
+					'type'	=> "red darken-1"
+				);
+				$this->session->set_flashdata('handler_msg',$flash_msg);
+				redirect(base_url().'home');
+			}
 		} else {
 			$flash_msg = array(
-				'msg'		=> "Email is not existed",
+				'msg'		=> "Sorry your email is not registered at Anakost.id",
 				'type'	=> "red darken-1"
 			);
 			$this->session->set_flashdata('handler_msg',$flash_msg);
@@ -482,6 +586,22 @@ class Login extends CI_Controller {
 		}
 
 		// if any, send email to the owner to give reset link
+	}
+
+	function recover($code){
+		$this->load->model('Reset_password_model');
+		$check_link_avail = $this->Reset_password_model->checkLinkAvail($code);
+		if(isset($check_link_avail) && !empty($check_link_avail)){
+			$data['title'] = 'Info Kost Semarang, Cari Kos Kosan Semarang, Rumah Kost di Semarang - Anakost.id';
+
+			// form action
+			$data['form_login'] = base_url() . 'login/loginProcess';
+			$data['form_register'] = base_url().'login/registerProcess';
+			$data['form_recover'] = base_url().'login/recoverProcess';
+
+			$this->load->view('layouts/head_2',$data);
+			$this->load->view('login/recover',$data);
+		}
 	}
 
 	function userConfirmation($code) {

@@ -1,0 +1,237 @@
+html {
+	font-family: Roboto, GillSans, Calibri, Trebuchet, sans-serif;
+}
+
+.icon_style {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	font-size: 20px;
+	color: white;
+	cursor: pointer;
+}
+
+#alert_box {
+	margin-bottom: 0px;
+	top: 0;
+	right: 0;
+	position: fixed;
+	z-index: 9999;
+}
+
+.slider .indicators .indicator-item.active {
+  background-color: rgba(255,0,0,0.8);
+}
+
+#headLogo {
+	margin-top: 5px;
+	margin-left: 15px;
+}
+
+.slider .indicators .indicator-item.active {
+	background-color: #00aead;
+	/*background-color: #0cbcb7;*/
+}
+
+#login {
+	width: 65% !important;
+}
+
+#login-text {
+	font-size: 16px;
+}
+
+#register-text {
+	font-size: 22px;
+}
+
+#signup-text {
+	font-size: 18px;
+}
+
+em.error,small.error {
+	color: red;
+}
+
+.slider .indicators .indicator-item {
+	width: 8px;
+	height: 8px;
+}
+
+#search_divider {
+	margin-left: 8%;
+	margin-right: 8%;
+}
+
+#search_table {
+	border-radius: 15px 50px !important;
+	border: 1px solid #e0e0e0 !important;
+}
+
+.judul-section {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.judul-section-see {
+	font-size: 12px;
+	font-weight: normal;
+}
+
+.hotlist-item {
+	position: relative;
+	border-radius: 3px;
+	border: 1px solid #e0e0e0;
+	padding: 4px;
+	min-height: 260px;
+}
+
+.hotlist-item-desc {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	background-color: #fff;
+	padding: 5px 0;
+	width: 100%;
+	border-radius: 0 0 3px 3px;
+}
+
+.hotlist-name {
+	font-size: 13px;
+	color: #555;
+}
+
+.hotlist-lower {
+	color: #999;
+}
+
+.review-item {
+	position: relative;
+	border-radius: 3px;
+	border: 1px solid #e0e0e0;
+	padding: 4px;
+	min-height: 260px;
+}
+
+.review-item-desc {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	background-color: #fff;
+	padding: 5px 0;
+	width: 100%;
+	border-radius: 0 0 3px 3px;
+}
+
+.review-name {
+	font-size: 13px;
+	color: #555;
+}
+
+.review-lower {
+	color: #999;
+}
+
+#phone_prefix {
+	font-size: 18px;
+	color: #444;
+}
+
+div#any-cover {
+	padding: 8px 9px;
+	border:1px solid #eee;
+}
+
+div#price-cover {
+	border:1px solid #eee;
+}
+
+table.table-item-details {
+	font-size: 12px;
+}
+
+tr.tr-bottomline {
+	border-bottom: 1px solid #eee;
+}
+
+td.td-details {
+	padding: 5px 5px;
+}
+
+.carousel .indicators .indicator-item {
+	background-color: rgba(43,187,173,.5);
+}
+
+.item-price {
+	text-align: center;
+	font-size: 24px;
+	font-weight: bold;
+	color: #f44336;
+}
+
+/*advanced search page*/
+button#search_btn {
+	margin-top: .4rem;
+}
+input#search_input {
+	border: 2px solid #2bbbad;
+	box-shadow: none;
+	padding: 0 0 0 10px;
+}
+div#search-all-section {
+	padding: 40px 0px;
+}
+div#adv-search-row {
+	padding: 0px 50px;
+}
+
+.search-item {
+	position: relative;
+	border-radius: 3px;
+	border: 1px solid #e0e0e0;
+	padding: 4px;
+	margin-bottom: 15px;
+}
+
+.search-item-desc {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	background-color: #fff;
+	padding: 5px 0;
+	width: 100%;
+	border-radius: 0 0 3px 3px;
+}
+
+.search-item-name {
+	font-size: 13px;
+	color: #555;
+}
+
+.search-item-lower {
+	color: #999;
+}
+
+/* Venue Address Search */
+input.search-box {
+	margin-top: 10px;
+	border: 1px solid transparent;
+	border-radius: 2px 0 0 2px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	height: 32px;
+	outline: none;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);    
+}
+
+#searchbox {
+	background-color: rgba(255,255,255,.95);
+	font-family: Roboto;
+	font-size: 15px;
+	font-weight: 300;
+	margin-left: 12px;
+	padding: 0 11px 0 13px;
+	text-overflow: ellipsis;
+	width: 300px;
+	top: 10px !important;
+}
